@@ -64,7 +64,7 @@ ynh_script_progression "Setting up the service for $app..."
 
 # Create a dedicated systemd service for $app
 ynh_config_add_systemd
-
+ynh_systemctl
 
 #=================================================
 # END OF SCRIPT
