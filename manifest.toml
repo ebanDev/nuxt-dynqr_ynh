@@ -40,6 +40,8 @@ ram.runtime = "512M"
     default = "visitors"
 
 [resources]
+    [resources.sources]
+
     [resources.sources.main]
     url = "https://github.com/ebanDev/nuxt-dynqr/archive/refs/tags/v0.1.tar.gz"
     sha256 = "ba5c0ef18c41eb1a7f15773d0d59e41623aabebffb48709f935cf3d845d3cdc6"
