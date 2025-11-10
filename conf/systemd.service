@@ -5,6 +5,7 @@ After=network.target
 [Service]
 # This defines the installation directory/working directory
 WorkingDirectory=__INSTALL_DIR__
+EnvironmentFile=__INSTALL_DIR__/.env
 
 # The user the service runs as (change this!)
 User=__APP__
