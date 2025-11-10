@@ -52,11 +52,9 @@ popd
 #=================================================
 ynh_script_progression "Setting up the database for $app..."
 
-# ynh_spawn_app_shell <<< "cd $install_dir && npm run prisma:generate && npm run prisma:migrate:deploy"
-
 pushd "$install_dir"
   ynh_hide_warnings ynh_exec_as_app npm run prisma:generate
-  ynh_hide_warnings ynh_exec_as_app npm run prisma:migrate:deploy
+  ynh_hide_warnings ynh_exec_as_app npm run prisma:migrate
 popd
 
 #=================================================
