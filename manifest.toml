@@ -1,0 +1,65 @@
+packaging_format = 2
+id = "nuxt-dynqr"
+name = "Nuxt DynQR"
+description.en = "A Nuxt.js app that generates and manages dynamic QR codes for YunoHost"
+description.fr = "Une app Nuxt.js qui génère et gère des QR codes dynamiques pour YunoHost"
+
+version = "0.1~ynh1"
+
+maintainers = ["ebanDev"]
+
+
+[upstream]
+license = "AGPL-3.0"
+code = "https://github.com/ebanDev/nuxt-dynqr"
+
+[integration]
+yunohost = ">= 11.1"
+helpers_version = "2.1"
+architectures = "all"
+multi_instance = false
+ldap = true
+sso = true
+disk = "100M"
+ram.build = "1G"
+ram.run = "512M"
+
+[install]
+    [install.domain]
+    # this is a generic question - ask strings are automatically handled by YunoHost's core
+    type = "domain"
+
+    [install.path]
+    # this is a generic question - ask strings are automatically handled by YunoHost's core
+    type = "path"
+    default = "/dynqr"
+
+    [install.init_main_permission]
+    # this is a generic question - ask strings are automatically handled by YunoHost's core
+    type = "group"
+    default = "visitors"
+
+[resources]
+    [resources.sources.main]
+    url = "https://github.com/ebanDev/nuxt-dynqr/archive/refs/tags/v0.1.tar.gz"
+    sha256 = "ba5c0ef18c41eb1a7f15773d0d59e41623aabebffb48709f935cf3d845d3cdc6"
+    autoupdate.strategy = "latest_github_tag"
+
+    [resources.system_user]
+
+    [resources.install_dir]
+    group = "www-data:r-x"
+
+    [resources.permissions]
+    main.url = "/"
+
+    [resources.apt]
+    packages = "mariadb-server"
+
+    [resources.database]
+    type = "mysql"
+
+    [resources.nodejs]
+    version = "22"
+
+    [resources.data_dir]

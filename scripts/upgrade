@@ -1,0 +1,50 @@
+#!/bin/bash
+
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_script_progression "Upgrading source files..."
+
+# Download, check integrity, uncompress and patch the source from manifest.toml
+ynh_setup_source --dest_dir="$install_dir" --keep=".env"
+
+#=================================================
+# REAPPLY SYSTEM CONFIGURATIONS
+#=================================================
+ynh_script_progression "Upgrading system configurations related to $app..."
+
+ynh_config_add_nginx
+
+#=================================================
+# REBUILDING THE APPLICATION
+#=================================================
+ynh_script_progression "Rebuilding $app..."
+
+ynh_exec_as_app "cd $install_dir && npm install && npm run build"
+
+#=================================================
+# UPDATING THE DATABASE
+#=================================================
+
+ynh_script_progression "Updating the database for $app..."
+ynh_exec_as_app "cd $install_dir && npm run prisma:generate && npm run prisma:migrate:deploy"
+
+#==================================================
+# RESTART THE APP SERVICE
+#==================================================
+
+ynh_script_progression "Restarting $app's service..."
+ynh_systemctl --service="$app" --action=restart
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression "Upgrade of $app completed"

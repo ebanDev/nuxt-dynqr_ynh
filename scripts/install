@@ -1,0 +1,67 @@
+#!/bin/bash
+
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# INITIALIZE AND STORE SETTINGS
+#=================================================
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+ynh_script_progression "Setting up source files..."
+
+# Download, check integrity, uncompress and patch the source from manifest.toml
+ynh_setup_source --dest_dir="$install_dir"
+
+# Download Node.js 22
+ynh_nodejs_install
+
+#=================================================
+# APP INITIAL CONFIGURATION
+#=================================================
+ynh_script_progression "Adding $app's configuration files..."
+
+ynh_config_add --template=".env" --destination="$install_dir/.env"
+
+#=================================================
+# SYSTEM CONFIGURATION
+#=================================================
+ynh_script_progression "Adding system configurations related to $app..."
+
+# Create a dedicated NGINX config using the conf/nginx.conf template
+ynh_config_add_nginx
+
+#=================================================
+# BUILDING THE APPLICATION
+#=================================================
+ynh_script_progression "Building $app..."
+
+ynh_exec_as_app "cd $install_dir && npm install && npm run build"
+
+#=================================================
+# DATABASE SETUP
+#=================================================
+ynh_script_progression "Setting up the database for $app..."
+
+ynh_exec_as_app "cd $install_dir && npm run prisma:generate && npm run prisma:migrate:deploy"
+
+#=================================================
+# SERVICE SETUP
+#=================================================
+ynh_script_progression "Setting up the service for $app..."
+
+# Create a dedicated systemd service for $app
+ynh_service_add --name="$app" --description="$app service" --working_dir="$install_dir" --user="$app" --group="$app" --exec_start="/usr/bin/node $install_dir/.output/server/index.mjs" --restart="on-failure" --wanted_by="multi-user.target"
+
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression "Installation of $app completed"

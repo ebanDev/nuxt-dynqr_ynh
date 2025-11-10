@@ -1,0 +1,1 @@
+Generate, brand, and manage short QR links with a modern Nuxt 4 UI. Nuxt DynQR lets users create short slugs that redirect to external URLs, customize and download QR codes (PNG/SVG), and optionally apply organization branding. Admins can manage all links and upload brand images.
