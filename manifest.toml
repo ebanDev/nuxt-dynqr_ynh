@@ -4,7 +4,7 @@ name = "Nuxt DynQR"
 description.en = "A Nuxt.js app that generates and manages dynamic QR codes for YunoHost"
 description.fr = "Une app Nuxt.js qui génère et gère des QR codes dynamiques pour YunoHost"
 
-version = "0.3~ynh6"
+version = "0.3~ynh7"
 
 maintainers = ["ebanDev"]
 
